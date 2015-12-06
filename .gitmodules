@@ -1,0 +1,3 @@
+[submodule "lib/DFPlayer-Mini-mp3"]
+	path = lib/DFPlayer-Mini-mp3
+	url = https://github.com/DFRobot/DFPlayer-Mini-mp3
