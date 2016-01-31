@@ -4,3 +4,12 @@
 [submodule "lib/Arduino-IRremote"]
 	path = lib/Arduino-IRremote
 	url = https://github.com/z3t0/Arduino-IRremote
+[submodule "fritzing/lib/DFRobot/Fritzing-library"]
+	path = fritzing/lib/DFRobot/Fritzing-library
+	url = https://github.com/DFRobot/Fritzing-library
+[submodule "fritzing/lib/Amperka/fritzing-lib"]
+	path = fritzing/lib/Amperka/fritzing-lib
+	url = https://github.com/amperka/fritzing-lib
+[submodule "fritzing/lib/Amperka/amperka-originals"]
+	path = fritzing/lib/Amperka/amperka-originals
+	url = https://github.com/amperka-projects/amperka-originals
