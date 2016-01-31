@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module fritzingVersion="0.8.7b.01.24.1bf5" icon="Custom1.png">
+    <title>BabyMobile</title>
+    <instances>
+        <instance moduleIdRef="2a_motor_shield_amperka_e8b9f316fcded70a5e76e5b3fc748a3d_7" modelIndex="54775" path="/home/rockosov/.config/Fritzing/parts/user/2a_motor_shield_amperka_e8b9f316fcded70a5e76e5b3fc748a3d_7.fzp">
+            <views/>
+        </instance>
+        <instance moduleIdRef="tsop22_0f4621ce53afce15fb54195bf0bb337c_1" modelIndex="54893" path="/home/rockosov/.config/Fritzing/parts/user/tsop22_0f4621ce53afce15fb54195bf0bb337c_1.fzp">
+            <views/>
+        </instance>
+        <instance moduleIdRef="DFPlayerMini_3da965e3a1cc431a232aca2023e960ed_12" modelIndex="54921" path="/home/rockosov/.config/Fritzing/parts/user/DFPlayerMini_3da965e3a1cc431a232aca2023e960ed_12.fzp">
+            <views/>
+        </instance>
+    </instances>
+</module>
