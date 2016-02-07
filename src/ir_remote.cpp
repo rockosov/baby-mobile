@@ -3,6 +3,11 @@
  */
 
 #include "ir_remote.h"
+#include "baby_mobile_pins.h"
+
+decode_results ir_remote_cur_cmd;
+decode_results ir_remote_lst_cmd;
+IRrecv         ir_remote(IR_REMOTE_PIN);
 
 void ir_remote_dump(HardwareSerial* serial, decode_results* command) {
     serial->print("IR_REMOTE: ");
@@ -85,5 +90,26 @@ void ir_remote_dump(HardwareSerial* serial, decode_results* command) {
             serial->println(")");
             break;
     }
+}
+
+void ir_remote_setup(void) {
+    /* Start IR receiver */
+    ir_remote.enableIRIn();
+
+    return;
+}
+
+decode_results* ir_remote_recv(void) {
+    if (ir_remote.decode(&ir_remote_cur_cmd)) {
+        if (ir_remote_cur_cmd.value == IR_REMOTE_REPEAT) {
+            ir_remote_cur_cmd = ir_remote_lst_cmd;
+        }
+        ir_remote_lst_cmd = ir_remote_cur_cmd;
+        ir_remote.resume();
+
+        return &ir_remote_cur_cmd;
+    }
+
+    return NULL;
 }
 

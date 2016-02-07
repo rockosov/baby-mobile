@@ -24,6 +24,12 @@
 #define IR_REMOTE_REPEAT     0xFFFFFFFF
 
 void ir_remote_dump(HardwareSerial* serial, decode_results* command);
+void ir_remote_setup(void);
+decode_results* ir_remote_recv(void);
+
+extern decode_results ir_remote_cur_cmd;
+extern decode_results ir_remote_lst_cmd;
+extern IRrecv         ir_remote;
 
 #endif /* !__IR_REMOTE_H__ */
 
