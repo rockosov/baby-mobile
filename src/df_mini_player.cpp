@@ -25,11 +25,30 @@ void df_mini_player_setup(void) {
     /* Add some delay to give a time for DFMiniPlayer Device Set Volume */
     delay(DF_MINI_PLAYER_SET_VOLUME_DELAY);
 
+    /* Change BUSY pin to INPUT mode */
+    pinMode(DF_MINI_PLAYER_BUSY_PIN, INPUT);
+
     return;
 }
 
 void df_mini_player_play_pause(void) {
-    mp3_play(1);
+    bool is_df_mini_player_busy = false;
+
+    /**
+     * Low means playing, High means no.
+     * Datasheet, page 2, Table 2.2 Pin Description.
+     */
+    is_df_mini_player_busy = !digitalRead(DF_MINI_PLAYER_BUSY_PIN);
+
+    Serial.print("DFMiniPlayer BUSY pin: ");
+    Serial.println(is_df_mini_player_busy);
+    if (is_df_mini_player_busy) {
+        Serial.println("Send PAUSE to DFMiniPlayer");
+        mp3_pause();
+    } else {
+        Serial.println("Send PLAY to DFMiniPlayer");
+        mp3_play();
+    }
 
     return;
 }
