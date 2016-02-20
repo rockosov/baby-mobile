@@ -17,11 +17,15 @@ void setup(void) {
     /* Setup Motor */
     motor_setup();
 
+    /* Setup RGB LED */
+    rgb_led_setup();
+
     return;
 }
 
 void loop(void) {
     decode_results* ir_remote_command = NULL;
+    rgb_led_mode_t  rgb_led_mode = RGB_LED_OFF;
 
     ir_remote_command = ir_remote_recv();
     if (ir_remote_command != NULL) {
@@ -65,9 +69,19 @@ void loop(void) {
             motor_change_direction(MOTOR_DIRECTION_CLOCKWISE);
             break;
 
+        case IR_REMOTE_ZOOM:
+            rgb_led_set_mode(RGB_LED_COLOR_STEPPER);
+            break;
+
+        case IR_REMOTE_MUTE:
+            rgb_led_set_mode(RGB_LED_OFF);
+            break;
+
         default:
             break;
     }
+
+    rgb_led_update();
 
     return;
 }

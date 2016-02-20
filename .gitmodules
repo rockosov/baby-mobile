@@ -13,3 +13,6 @@
 [submodule "fritzing/lib/Amperka/amperka-originals"]
 	path = fritzing/lib/Amperka/amperka-originals
 	url = https://github.com/amperka-projects/amperka-originals
+[submodule "lib/Timer"]
+	path = lib/Timer
+	url = https://github.com/JChristensen/Timer

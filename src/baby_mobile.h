@@ -5,6 +5,7 @@
 #include "ir_remote.h"
 #include "df_mini_player.h"
 #include "motor.h"
+#include "rgb_led.h"
 
 #define SERIAL_SPEED 9600
 
