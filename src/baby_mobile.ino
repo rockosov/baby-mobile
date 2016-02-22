@@ -77,6 +77,10 @@ void loop(void) {
             rgb_led_set_mode(RGB_LED_OFF);
             break;
 
+        case IR_REMOTE_OK:
+            motor_switch_on_off();
+            break;
+
         default:
             break;
     }
