@@ -8,6 +8,11 @@ static SoftwareSerial df_mini_player_serial(DF_MINI_PLAYER_RX_PIN,
                                             DF_MINI_PLAYER_TX_PIN);
 
 static uint16_t current_volume = DF_MINI_PLAYER_DEFAULT_VOLUME;
+static volatile bool is_free = false;
+
+static void df_mini_player_busy_rising_handler(void) {
+    is_free = true;
+}
 
 void df_mini_player_setup(void) {
     /* Start DFMiniPlayer Serial port */
@@ -28,6 +33,10 @@ void df_mini_player_setup(void) {
     /* Change BUSY pin to INPUT mode */
     pinMode(DF_MINI_PLAYER_BUSY_PIN, INPUT);
 
+    attachInterrupt(DF_MINI_PLAYER_BUSY_INT,
+                    df_mini_player_busy_rising_handler,
+                    RISING);
+
     return;
 }
 
@@ -44,9 +53,15 @@ void df_mini_player_play_pause(void) {
     Serial.println(is_df_mini_player_busy);
     if (is_df_mini_player_busy) {
         Serial.println("Send PAUSE to DFMiniPlayer");
+        detachInterrupt(DF_MINI_PLAYER_BUSY_INT);
         mp3_pause();
     } else {
         Serial.println("Send PLAY to DFMiniPlayer");
+        /* Clear interrupt for DFMiniPlayer int */
+        EIFR |= 1 << DF_MINI_PLAYER_BUSY_INT;
+        attachInterrupt(DF_MINI_PLAYER_BUSY_INT,
+                        df_mini_player_busy_rising_handler,
+                        RISING);
         mp3_play();
     }
 
@@ -71,5 +86,13 @@ void df_mini_player_next(void) {
 
 void df_mini_player_prev(void) {
     mp3_prev();
+}
+
+void df_mini_player_cycle_check(void) {
+    if (is_free) {
+        Serial.print("Detect the end of song, play next");
+        mp3_next();
+        is_free = false;
+    }
 }
 

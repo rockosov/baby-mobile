@@ -16,6 +16,7 @@ void df_mini_player_increase_volume(void);
 void df_mini_player_decrease_volume(void);
 void df_mini_player_next(void);
 void df_mini_player_prev(void);
+void df_mini_player_cycle_check(void);
 
 #endif /* !__DF_MINI_PLAYER_H__ */
 

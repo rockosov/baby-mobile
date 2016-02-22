@@ -10,6 +10,7 @@
 #define RGB_LED_GREEN_PIN       10
 #define RGB_LED_BLUE_PIN        6
 #define DF_MINI_PLAYER_BUSY_PIN 2
+#define DF_MINI_PLAYER_BUSY_INT 0
 
 #endif /* !__BABY_MOBILE_PINS_H__ */
 

@@ -81,6 +81,7 @@ void loop(void) {
             break;
     }
 
+    df_mini_player_cycle_check();
     rgb_led_update();
 
     return;
