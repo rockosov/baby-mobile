@@ -132,7 +132,7 @@ void rgb_led_setup(void) {
     return;
 }
 
-void rgb_led_set_mode(rgb_led_mode_t rgb_led_mode) {
+static void rgb_led_set_mode(rgb_led_mode_t rgb_led_mode) {
     uint8_t rgb[3] = RGB_LED_NO_COLOR;
 
     current_mode = rgb_led_mode;
@@ -144,6 +144,14 @@ void rgb_led_set_mode(rgb_led_mode_t rgb_led_mode) {
 
 rgb_led_mode_t rgb_led_get_mode(void) {
     return current_mode;
+}
+
+void rgb_led_switch_on_off(void) {
+    if (current_mode != RGB_LED_OFF) {
+        rgb_led_set_mode(RGB_LED_OFF);
+    } else {
+        rgb_led_set_mode(RGB_LED_COLOR_STEPPER);
+    }
 }
 
 void rgb_led_update(void) {

@@ -5,7 +5,10 @@
 #define RGB_LED_DEFAULT_SATURATION 100
 #define RGB_LED_DEFAULT_BRIGHTNESS 100
 #define RGB_LED_NO_COLOR           {0, 0, 0}
-#define RGB_LED_DEFAULT_TICK       100
+#define RGB_LED_DEFAULT_TICK       0
+#define RGB_LED_MIN_TICK           0
+#define RGB_LED_MAX_TICK           10 * 1000
+#define RGB_LED_STEP_TICK          100
 
 typedef enum {
     RGB_LED_OFF = 0,
@@ -13,7 +16,7 @@ typedef enum {
 } rgb_led_mode_t;
 
 void rgb_led_setup(void);
-void rgb_led_set_mode(rgb_led_mode_t rgb_led_mode);
+void rgb_led_switch_on_off(void);
 rgb_led_mode_t rgb_led_get_mode(void);
 void rgb_led_update(void);
 

@@ -69,12 +69,8 @@ void loop(void) {
             motor_change_direction(MOTOR_DIRECTION_CLOCKWISE);
             break;
 
-        case IR_REMOTE_ZOOM:
-            rgb_led_set_mode(RGB_LED_COLOR_STEPPER);
-            break;
-
         case IR_REMOTE_MUTE:
-            rgb_led_set_mode(RGB_LED_OFF);
+            rgb_led_switch_on_off();
             break;
 
         case IR_REMOTE_OK:
