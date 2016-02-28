@@ -11,7 +11,6 @@ static uint32_t timer_tick = RGB_LED_DEFAULT_TICK;
 static uint32_t current_hue = RGB_LED_DEFAULT_HUE;
 static uint32_t current_saturation = RGB_LED_DEFAULT_SATURATION;
 static uint32_t current_brightness = RGB_LED_DEFAULT_BRIGHTNESS;
-static bool is_hue_forward_incrementation = true;
 
 /**
  * hue ∈ [0°, 360°)
@@ -114,7 +113,8 @@ static void rgb_led_color_step(void) {
     uint32_t hue = 0;
     uint8_t  rgb[3] = RGB_LED_NO_COLOR;
 
-    if (current_mode == RGB_LED_COLOR_STEPPER) {
+    /* Only for step mode we need change the color */
+    if (current_mode == RGB_LED_COLOR_STEP) {
         current_hue = (current_hue + 1) % (2 * 360);
         hue = (current_hue > 360) ? (2 * 360 - current_hue) : current_hue;
         Serial.print("hue = ");
@@ -133,11 +133,13 @@ void rgb_led_setup(void) {
 }
 
 static void rgb_led_set_mode(rgb_led_mode_t rgb_led_mode) {
-    uint8_t rgb[3] = RGB_LED_NO_COLOR;
+    uint8_t no_color[3] = RGB_LED_NO_COLOR;
 
     current_mode = rgb_led_mode;
 
-    rgb_led_update_current_color(rgb);
+    if (current_mode == RGB_LED_OFF) {
+        rgb_led_update_current_color(no_color);
+    }
 
     return;
 }
@@ -150,11 +152,31 @@ void rgb_led_switch_on_off(void) {
     if (current_mode != RGB_LED_OFF) {
         rgb_led_set_mode(RGB_LED_OFF);
     } else {
-        rgb_led_set_mode(RGB_LED_COLOR_STEPPER);
+        rgb_led_set_mode(RGB_LED_COLOR_STEP);
     }
 }
 
 void rgb_led_update(void) {
     timer.update();
+}
+
+void rgb_led_color_freeze_or_step(void) {
+    switch (current_mode) {
+        case RGB_LED_COLOR_STEP:
+            /* Freeze */
+            rgb_led_set_mode(RGB_LED_COLOR_FREEZE);
+            break;
+
+        case RGB_LED_COLOR_FREEZE:
+            /* Step */
+            rgb_led_set_mode(RGB_LED_COLOR_STEP);
+            break;
+
+        default:
+            /* RGB_LED_OFF */
+            break;
+    }
+
+    return;
 }
 

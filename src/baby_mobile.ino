@@ -77,6 +77,10 @@ void loop(void) {
             motor_switch_on_off();
             break;
 
+        case IR_REMOTE_SETUP:
+            rgb_led_color_freeze_or_step();
+            break;
+
         default:
             break;
     }
