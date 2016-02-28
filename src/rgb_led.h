@@ -4,6 +4,8 @@
 #define RGB_LED_DEFAULT_HUE        0
 #define RGB_LED_DEFAULT_SATURATION 100
 #define RGB_LED_DEFAULT_BRIGHTNESS 100
+#define RGB_LED_MIN_BRIGHTNESS     0
+#define RGB_LED_MAX_BRIGHTNESS     100
 #define RGB_LED_NO_COLOR           {0, 0, 0}
 #define RGB_LED_DEFAULT_TICK       0
 #define RGB_LED_MIN_TICK           0
@@ -21,6 +23,8 @@ void rgb_led_switch_on_off(void);
 rgb_led_mode_t rgb_led_get_mode(void);
 void rgb_led_update(void);
 void rgb_led_color_freeze_or_step(void);
+void rgb_led_increment_brightness(void);
+void rgb_led_decrement_brightness(void);
 
 #endif /* !__RGB_LED_H__ */
 

@@ -81,6 +81,14 @@ void loop(void) {
             rgb_led_color_freeze_or_step();
             break;
 
+        case IR_REMOTE_ZOOM:
+            rgb_led_increment_brightness();
+            break;
+
+        case IR_REMOTE_ROTATE:
+            rgb_led_decrement_brightness();
+            break;
+
         default:
             break;
     }

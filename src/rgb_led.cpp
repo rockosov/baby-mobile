@@ -4,13 +4,13 @@
 #include <Arduino.h>
 #include <Timer.h>
 
-static bool is_color_stepper_mode = false;
 static rgb_led_mode_t current_mode = RGB_LED_OFF;
 static Timer timer;
 static uint32_t timer_tick = RGB_LED_DEFAULT_TICK;
 static uint32_t current_hue = RGB_LED_DEFAULT_HUE;
 static uint32_t current_saturation = RGB_LED_DEFAULT_SATURATION;
 static uint32_t current_brightness = RGB_LED_DEFAULT_BRIGHTNESS;
+static bool is_color_changed_in_freeze = false;
 
 /**
  * hue ∈ [0°, 360°)
@@ -113,9 +113,19 @@ static void rgb_led_color_step(void) {
     uint32_t hue = 0;
     uint8_t  rgb[3] = RGB_LED_NO_COLOR;
 
-    /* Only for step mode we need change the color */
-    if (current_mode == RGB_LED_COLOR_STEP) {
-        current_hue = (current_hue + 1) % (2 * 360);
+    /**
+     * Only for step mode we need change the color.
+     * But for freeze mode if color was changed in the another routine,
+     * we need to update rgb.
+     */
+    if (current_mode == RGB_LED_COLOR_STEP ||
+        (current_mode == RGB_LED_COLOR_FREEZE && is_color_changed_in_freeze)) {
+        if (current_mode == RGB_LED_COLOR_STEP) {
+            current_hue = (current_hue + 1) % (2 * 360);
+        }
+
+        is_color_changed_in_freeze = false;
+
         hue = (current_hue > 360) ? (2 * 360 - current_hue) : current_hue;
         Serial.print("hue = ");
         Serial.println(hue);
@@ -175,6 +185,52 @@ void rgb_led_color_freeze_or_step(void) {
         default:
             /* RGB_LED_OFF */
             break;
+    }
+
+    return;
+}
+
+void rgb_led_increment_brightness(void) {
+    uint8_t increment = 0;
+
+    if (current_mode == RGB_LED_OFF) {
+        return;
+    }
+
+    Serial.print("brightness ");
+    Serial.print(current_brightness);
+
+    increment = (current_brightness != RGB_LED_MAX_BRIGHTNESS) ? 1 : 0;
+    current_brightness += increment;
+
+    Serial.print(" => brightness ");
+    Serial.println(current_brightness);
+
+    if (current_mode == RGB_LED_COLOR_FREEZE && increment != 0) {
+        is_color_changed_in_freeze = true;
+    }
+
+    return;
+}
+
+void rgb_led_decrement_brightness(void) {
+    uint8_t decrement = 0;
+
+    if (current_mode == RGB_LED_OFF) {
+        return;
+    }
+
+    Serial.print("brightness ");
+    Serial.print(current_brightness);
+
+    decrement = (current_brightness != RGB_LED_MIN_BRIGHTNESS) ? 1 : 0;
+    current_brightness -= decrement;
+
+    Serial.print(" => brightness ");
+    Serial.println(current_brightness);
+
+    if (current_mode == RGB_LED_COLOR_FREEZE && decrement != 0) {
+        is_color_changed_in_freeze = true;
     }
 
     return;
