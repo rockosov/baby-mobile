@@ -5,8 +5,9 @@
 #include <Timer.h>
 
 static rgb_led_mode_t current_mode = RGB_LED_OFF;
-static Timer timer;
-static uint32_t timer_tick = RGB_LED_DEFAULT_TICK;
+static Timer step_timer;
+static int8_t step_event_id = 0;
+static uint32_t step_timer_tick = RGB_LED_DEFAULT_TICK;
 static uint32_t current_hue = RGB_LED_DEFAULT_HUE;
 static uint32_t current_saturation = RGB_LED_DEFAULT_SATURATION;
 static uint32_t current_brightness = RGB_LED_DEFAULT_BRIGHTNESS;
@@ -137,7 +138,7 @@ static void rgb_led_color_step(void) {
 }
 
 void rgb_led_setup(void) {
-    timer.every(timer_tick, rgb_led_color_step);
+    step_event_id = step_timer.every(step_timer_tick, rgb_led_color_step);
 
     return;
 }
@@ -167,7 +168,7 @@ void rgb_led_switch_on_off(void) {
 }
 
 void rgb_led_update(void) {
-    timer.update();
+    step_timer.update();
 }
 
 void rgb_led_color_freeze_or_step(void) {
@@ -232,6 +233,44 @@ void rgb_led_decrement_brightness(void) {
     if (current_mode == RGB_LED_COLOR_FREEZE && decrement != 0) {
         is_color_changed_in_freeze = true;
     }
+
+    return;
+}
+
+void rgb_led_increment_step_tick(void) {
+    if (current_mode != RGB_LED_COLOR_STEP) {
+        return;
+    }
+
+    Serial.print("step_timer_tick ");
+    Serial.print(step_timer_tick);
+
+    step_timer_tick += (step_timer_tick != RGB_LED_MAX_TICK) ? RGB_LED_STEP_TICK : 0;
+
+    step_timer.stop(step_event_id);
+    step_event_id = step_timer.every(step_timer_tick, rgb_led_color_step);
+
+    Serial.print(" => step_timer_tick ");
+    Serial.println(step_timer_tick);
+
+    return;
+}
+
+void rgb_led_decrement_step_tick(void) {
+    if (current_mode != RGB_LED_COLOR_STEP) {
+        return;
+    }
+
+    Serial.print("step_timer_tick ");
+    Serial.print(step_timer_tick);
+
+    step_timer_tick -= (step_timer_tick != RGB_LED_MIN_TICK) ? RGB_LED_STEP_TICK : 0;
+
+    step_timer.stop(step_event_id);
+    step_event_id = step_timer.every(step_timer_tick, rgb_led_color_step);
+
+    Serial.print(" => step_timer_tick ");
+    Serial.println(step_timer_tick);
 
     return;
 }

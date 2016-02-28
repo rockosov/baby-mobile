@@ -9,8 +9,8 @@
 #define RGB_LED_NO_COLOR           {0, 0, 0}
 #define RGB_LED_DEFAULT_TICK       0
 #define RGB_LED_MIN_TICK           0
-#define RGB_LED_MAX_TICK           10 * 1000
-#define RGB_LED_STEP_TICK          100
+#define RGB_LED_MAX_TICK           200
+#define RGB_LED_STEP_TICK          20
 
 typedef enum {
     RGB_LED_OFF          = 0,
@@ -25,6 +25,8 @@ void rgb_led_update(void);
 void rgb_led_color_freeze_or_step(void);
 void rgb_led_increment_brightness(void);
 void rgb_led_decrement_brightness(void);
+void rgb_led_increment_step_tick(void);
+void rgb_led_decrement_step_tick(void);
 
 #endif /* !__RGB_LED_H__ */
 

@@ -89,6 +89,14 @@ void loop(void) {
             rgb_led_decrement_brightness();
             break;
 
+        case IR_REMOTE_MENU:
+            rgb_led_increment_step_tick();
+            break;
+
+        case IR_REMOTE_RETURN:
+            rgb_led_decrement_step_tick();
+            break;
+
         default:
             break;
     }
