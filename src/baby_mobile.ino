@@ -97,6 +97,10 @@ void loop(void) {
             rgb_led_decrement_step_tick();
             break;
 
+        case IR_REMOTE_BGM:
+            df_mini_player_next_folder();
+            break;
+
         default:
             break;
     }
